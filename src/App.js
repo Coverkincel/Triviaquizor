@@ -1,26 +1,96 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import Trivia from './components/trivia';
+import Menu from './components/menu';
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      questions: null,
+      isTrivia: false,
+      isTriviaMenu: true,
+      category: 0,
+      difficulty: 0,
+      questionsNumber: 10
+    }
+    this.isTriviaSwitch = this.isTriviaSwitch.bind(this);
+    this.apiCall = this.apiCall.bind(this);
+    this.applyCategory = this.applyCategory.bind(this);
+    this.switchTriviaMenu = this.switchTriviaMenu.bind(this);
+  }
 
-export default App;
+  apiCall(URL) {
+    fetch(URL)
+    .then(response => response.json())
+    .then(data => {
+      this.setState({
+        questions: data.results,
+        error: false
+      }
+      )
+    })
+    .catch(error => console.error(error), () => {
+      this.setState({
+        error: true
+      })
+    })
+  }
+
+  componentWillMount() {
+    this.apiCall('https://opentdb.com/api.php?amount=10')
+  }
+
+  isTriviaSwitch() {
+    this.setState({
+      isTrivia: !this.state.isTrivia
+    }, () => {
+      if (this.state.category !== 1 && this.state.category !== 0) {
+        this.apiCall('https://opentdb.com/api.php?amount=10&category='+this.state.category);
+      } else {
+        this.apiCall('https://opentdb.com/api.php?amount=10');
+      }
+    })
+  }
+
+  applyCategory(category) {
+    this.switchTriviaMenu();
+    this.setState({
+      isTrivia: false,
+      category: category
+    });
+    if (category === 1) {
+      this.apiCall('https://opentdb.com/api.php?amount=10');
+    } else {
+      this.apiCall(`https://opentdb.com/api.php?amount=10&category=${category}`);
+      console.log('current category: ' + category);
+    }
+  }
+
+  switchTriviaMenu() {
+    this.setState({
+      isTriviaMenu: !this.state.isTriviaMenu
+    })
+  }
+
+  render() {
+    const {isTrivia, questions, isTriviaMenu} = this.state;
+    if (!questions) {
+      return <div>LOADING</div>
+    } else {
+    return (
+      <div className='main-container'>
+        <div className='inner-container'>
+        <Menu applyCategory={this.applyCategory} triviaSwitch={this.switchTriviaMenu}/>
+        {isTriviaMenu ? <div className='trivia-menu'>
+  {this.state.isTrivia ? <Trivia questions={this.state.questions} isTriviaSwitch={this.isTriviaSwitch}/> : 'press start'}
+  <button onClick={this.isTriviaSwitch}>{isTrivia ? 'Menu' : 'Start!'}</button>
+        </div> : null}
+        
+        </div>
+      </div>
+    )
+  }
+  }
+}
