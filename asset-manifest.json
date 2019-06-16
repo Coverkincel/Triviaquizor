@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/Triviaquizor/static/css/main.a4a8cdad.chunk.css",
+    "main.js": "/Triviaquizor/static/js/main.db0bddb3.chunk.js",
+    "main.js.map": "/Triviaquizor/static/js/main.db0bddb3.chunk.js.map",
+    "runtime~main.js": "/Triviaquizor/static/js/runtime~main.86b3984b.js",
+    "runtime~main.js.map": "/Triviaquizor/static/js/runtime~main.86b3984b.js.map",
+    "static/js/2.5dbd8ed4.chunk.js": "/Triviaquizor/static/js/2.5dbd8ed4.chunk.js",
+    "static/js/2.5dbd8ed4.chunk.js.map": "/Triviaquizor/static/js/2.5dbd8ed4.chunk.js.map",
+    "index.html": "/Triviaquizor/index.html",
+    "precache-manifest.5d070b054accccd2e39fa2d2e6be71a6.js": "/Triviaquizor/precache-manifest.5d070b054accccd2e39fa2d2e6be71a6.js",
+    "service-worker.js": "/Triviaquizor/service-worker.js",
+    "static/css/main.a4a8cdad.chunk.css.map": "/Triviaquizor/static/css/main.a4a8cdad.chunk.css.map"
+  }
+}
