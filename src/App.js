@@ -1,4 +1,6 @@
-import React, { Component } from 'react';
+import React, {
+  Component
+} from 'react';
 import Trivia from './components/trivia';
 import Menu from './components/menu';
 import './App.css';
@@ -21,25 +23,26 @@ export default class App extends Component {
     this.switchTriviaMenu = this.switchTriviaMenu.bind(this);
   }
 
+  questionsNumber = this.state;
+
   apiCall(URL) {
     fetch(URL)
-    .then(response => response.json())
-    .then(data => {
-      this.setState({
-        questions: data.results,
-        error: false
-      }
-      )
-    })
-    .catch(error => console.error(error), () => {
-      this.setState({
-        error: true
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          questions: data.results,
+          error: false
+        })
       })
-    })
+      .catch(error => console.error(error), () => {
+        this.setState({
+          error: true
+        })
+      })
   }
 
   componentWillMount() {
-    this.apiCall('https://opentdb.com/api.php?amount=10')
+    this.apiCall('https://opentdb.com/api.php?amount=15')
   }
 
   isTriviaSwitch() {
@@ -47,9 +50,9 @@ export default class App extends Component {
       isTrivia: !this.state.isTrivia
     }, () => {
       if (this.state.category !== 1 && this.state.category !== 0) {
-        this.apiCall('https://opentdb.com/api.php?amount=10&category='+this.state.category);
+        this.apiCall('https://opentdb.com/api.php?amount=15&category=' + this.state.category);
       } else {
-        this.apiCall('https://opentdb.com/api.php?amount=10');
+        this.apiCall('https://opentdb.com/api.php?amount=15');
       }
     })
   }
@@ -61,10 +64,9 @@ export default class App extends Component {
       category: category
     });
     if (category === 1) {
-      this.apiCall('https://opentdb.com/api.php?amount=10');
+      this.apiCall('https://opentdb.com/api.php?amount=15');
     } else {
-      this.apiCall(`https://opentdb.com/api.php?amount=10&category=${category}`);
-      console.log('current category: ' + category);
+      this.apiCall(`https://opentdb.com/api.php?amount=15&category=${category}`);
     }
   }
 
@@ -75,19 +77,28 @@ export default class App extends Component {
   }
 
   render() {
-    const {isTrivia, questions, isTriviaMenu} = this.state;
-    if (!questions) {
+      const {
+        isTrivia,
+        questions,
+        isTriviaMenu
+      } = this.state;
+      if (!questions) {
       return <div>LOADING</div>
     } else {
     return (
       <div className='main-container'>
         <div className='inner-container'>
-        <Menu applyCategory={this.applyCategory} triviaSwitch={this.switchTriviaMenu}/>
-        {isTriviaMenu ? <div className='trivia-menu'>
-  {this.state.isTrivia ? <Trivia questions={this.state.questions} isTriviaSwitch={this.isTriviaSwitch}/> : 'press start'}
-  <button onClick={this.isTriviaSwitch}>{isTrivia ? 'Menu' : 'Start!'}</button>
-        </div> : null}
-        
+          <Menu applyCategory={this.applyCategory} triviaSwitch={this.switchTriviaMenu} />
+
+          {isTriviaMenu ? <div className='trivia-menu'>
+
+            <button className='button' onClick={this.isTriviaSwitch}> {isTrivia ? <i className='fas fa-undo-alt'></i>:<i
+                className='far fa-play-circle'></i>}
+              {isTrivia ? ' Close' : ' Start!'}</button>
+            {this.state.isTrivia ?
+            <Trivia questions={this.state.questions} isTriviaSwitch={this.isTriviaSwitch} /> : null}
+
+          </div> : null}
         </div>
       </div>
     )

@@ -1,0 +1,35 @@
+.trivia-container {
+    border: 1px solid black;
+    font-size: 2em;
+    margin: 20px;
+    padding: 10px;
+    border-radius: 20px;
+    max-width: 1000px;
+}
+
+.difficulty {
+    margin-bottom: 10px;
+    font-size: 0.7em;
+}
+
+.question {
+    font-family: 'Saira Semi Condensed', sans-serif;
+    font-weight: 500;
+}
+
+.answers-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+@media only screen and (max-width: 800px) {
+    .trivia-container {
+        font-size: 1.5em;
+    }
+
+    .answers-list {
+        flex-direction: column;
+    }
+}
