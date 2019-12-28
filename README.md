@@ -39,7 +39,7 @@ npm run test
 
 👤 **Dmitry Kincel**
 
-- Github: [@Coverkincel](https://github.com/Coverkincel)
+* Github: [@Coverkincel](https://github.com/Coverkincel)
 
 ## Show your support
 
