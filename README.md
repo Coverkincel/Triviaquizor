@@ -1,6 +1,6 @@
 <h1 align="center">Welcome to Triviaquizor 👋</h1>
 <p>
-  <img src="https://img.shields.io/badge/version-1.1-blue.svg?cacheSeconds=2592000" />
+  <img src="https://img.shields.io/badge/version-1.0-blue.svg?cacheSeconds=2592000" />
 </p>
 
 > Trivia game, which was built using React.js and Trivia api
