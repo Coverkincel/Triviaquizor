@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/Triviaquizor/static/css/main.fd41d34d.chunk.css",
-    "main.js": "/Triviaquizor/static/js/main.cee1a109.chunk.js",
-    "main.js.map": "/Triviaquizor/static/js/main.cee1a109.chunk.js.map",
+    "main.css": "/Triviaquizor/static/css/main.eb91de19.chunk.css",
+    "main.js": "/Triviaquizor/static/js/main.87f9b493.chunk.js",
+    "main.js.map": "/Triviaquizor/static/js/main.87f9b493.chunk.js.map",
     "runtime~main.js": "/Triviaquizor/static/js/runtime~main.86b3984b.js",
     "runtime~main.js.map": "/Triviaquizor/static/js/runtime~main.86b3984b.js.map",
-    "static/js/2.5dbd8ed4.chunk.js": "/Triviaquizor/static/js/2.5dbd8ed4.chunk.js",
-    "static/js/2.5dbd8ed4.chunk.js.map": "/Triviaquizor/static/js/2.5dbd8ed4.chunk.js.map",
+    "static/js/2.9deac8de.chunk.js": "/Triviaquizor/static/js/2.9deac8de.chunk.js",
+    "static/js/2.9deac8de.chunk.js.map": "/Triviaquizor/static/js/2.9deac8de.chunk.js.map",
     "index.html": "/Triviaquizor/index.html",
-    "precache-manifest.ce0f88502ba025218349f51110b37541.js": "/Triviaquizor/precache-manifest.ce0f88502ba025218349f51110b37541.js",
+    "precache-manifest.e6e11f5a8e26438b19d6e141719823c5.js": "/Triviaquizor/precache-manifest.e6e11f5a8e26438b19d6e141719823c5.js",
     "service-worker.js": "/Triviaquizor/service-worker.js",
-    "static/css/main.fd41d34d.chunk.css.map": "/Triviaquizor/static/css/main.fd41d34d.chunk.css.map"
+    "static/css/main.eb91de19.chunk.css.map": "/Triviaquizor/static/css/main.eb91de19.chunk.css.map"
   }
 }
