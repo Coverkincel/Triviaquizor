@@ -1,8 +1,8 @@
 {
+  "homepage": "http://Coverkincel.github.io/Triviaquizor",
   "name": "triviajs",
   "version": "0.1.0",
   "private": true,
-  "homepage": "http://Coverkincel.github.io/Triviaquizor",
   "dependencies": {
     "@babel/runtime": "^7.10.4",
     "font-awesome": "^4.7.0",
@@ -39,6 +39,6 @@
     ]
   },
   "devDependencies": {
-    "gh-pages": "^2.0.1"
+    "gh-pages": "^2.2.0"
   }
 }
