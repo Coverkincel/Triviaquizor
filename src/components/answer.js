@@ -9,11 +9,11 @@ export default class Answer extends Component {
       this.props.showColors
     ) {
       answerStyle = {
-        background: 'green'
+        background: '#79bd31'
       };
     } else if (this.props.showColors) {
       answerStyle = {
-        background: 'red'
+        background: '#d8465e'
       };
     }
 

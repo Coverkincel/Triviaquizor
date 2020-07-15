@@ -14,7 +14,7 @@ class App extends Component {
       isTriviaMenu: true,
       category: 0,
       difficulty: 0,
-      questionsNumber: 1
+      questionsNumber: 5
     };
     this.isTriviaSwitch = this.isTriviaSwitch.bind(this);
     this.apiCall = this.apiCall.bind(this);
@@ -146,14 +146,15 @@ class App extends Component {
     {!this.props.shopToggled ?             <div>
             {isTriviaMenu ? (
               <div className='trivia-menu'>
-                <button className='button' onClick={() => this.isTriviaSwitch(this.props.coinsMore)}>
+
+                {!isTrivia ? <button className='button' onClick={() => this.isTriviaSwitch(this.props.coinsMore)}>
                   {' '}
                   {isTrivia ? (
                     <i className='fas fa-undo-alt'></i>
                   ) : (
                     <i className='far fa-play-circle'></i>
                   )}
-                  {isTrivia ? ' Close' : 
+                  {isTrivia ? null : 
                   <div> 
                     
                     <div>START 
@@ -164,6 +165,9 @@ class App extends Component {
                   
                   }
                 </button>
+ : null} 
+                
+
                 {this.state.isTrivia ? (
                   <Trivia
                     questions={this.state.questions}
