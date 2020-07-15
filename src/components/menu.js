@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import './menu.css';
 import { categories } from '../categoryList';
+import {connect} from 'react-redux';
+import Odometer from 'react-odometerjs';
 
-export default class menu extends Component {
+class menu extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -12,6 +14,7 @@ export default class menu extends Component {
     };
     this.toggleRules = this.toggleRules.bind(this);
     this.toggleCategories = this.toggleCategories.bind(this);
+    this.toggleShop = this.toggleShop.bind(this);
   }
 
   toggleRules() {
@@ -34,22 +37,23 @@ export default class menu extends Component {
     });
   }
 
+  toggleShop() {
+    this.props.dispatch({type: "TOOGLE_SHOP"})
+  }
+
   render() {
-    const { isRulesToggled, isCategoriesToggled, categoryName } = this.state;
+    const {isCategoriesToggled, categoryName } = this.state;
     return (
       <div className='main-menu-container'>
-        {!isCategoriesToggled ? (
+                    <h1 className='title'>Trivia quiz</h1>
+
+
+        {!this.props.shopToggled ? <div>
+          {!isCategoriesToggled ? (
           <div className='header'>
-            <h1 className='title'>Trivia quiz</h1>
-            <div className='settings'>
-              <button
-                className='button button-settings'
-                onClick={this.toggleRules}
-              >
-                <h3>
-                  <i className='fas fa-list'></i> Rules
-                </h3>
-              </button>
+            
+            {!this.props.hideUI ? <div className='settings'>
+
               <button
                 className='button button-categories'
                 onClick={() => {
@@ -61,21 +65,30 @@ export default class menu extends Component {
                   <i className='fas fa-cog'></i> Categories
                 </h3>
               </button>
-            </div>
-            {isRulesToggled ? (
-              <p className='rules-info'>
-                Choose the category you like the most (or don't choose anything)
-                and press start button.
-                <br /> You will get Score-points for each correct answer, the
-                amount of which depends on the difficulty <br />
-                For each wrong answer you will lose score-points as well. <br />
-                <br />
-                Good luck to you!
-              </p>
-            ) : null}
+            </div> : null}
+            
           </div>
         ) : (
           <div className='categories-container'>
+                    <div className='category'>
+
+          <div className='category-container'>
+            <h3 className='category-title'>Current category</h3>
+            <p className='category-name'>{categoryName}</p>
+          </div>
+
+
+          {!isCategoriesToggled ?           <div className="coins-container">
+              <div className="coins">
+              <i className="fas fa-coins"></i> {this.props.coins}
+              </div>
+              <div className="shop">
+                SHOP
+              </div>
+            </div> : null}
+
+
+        </div>
             <h1>Category list</h1>
             <p>Choose any category you want to answer questions on!</p>
             <ul className='category-list'>
@@ -110,13 +123,55 @@ export default class menu extends Component {
             </ul>
           </div>
         )}
-        <div className='category'>
-          <div className='category-container'>
+
+        </div> : null}
+
+        
+
+
+        {
+
+
+        }
+        {!isCategoriesToggled ?         <div className='category'>
+
+          {!this.props.shopToggled ? <div className='category-container'>
             <h3 className='category-title'>Current category</h3>
             <p className='category-name'>{categoryName}</p>
-          </div>
-        </div>
+          </div> : null}
+          
+
+
+
+
+              { !isCategoriesToggled ?           <div className="coins-container">
+              <div className="coins">
+              <i className="fas fa-coins"></i> 
+              <Odometer value={this.props.coins} format="(.ddd),dd" />
+
+              </div>
+              {!this.props.hideUI ?               <div className="shop">
+                
+                <button onClick={this.toggleShop}>              <i className="fas fa-shopping-cart"></i>
+                SHOP</button>
+            
+              </div> : null}
+
+
+            </div> : null}
+
+
+        </div> : null}
+
       </div>
     );
   }
 }
+
+const mapStateToProps = (state) => ({
+  hideUI: state.hideUI,
+  coins: state.coins,
+  shopToggled: state.shopToggled
+})
+
+export default connect(mapStateToProps)(menu);

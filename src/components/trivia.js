@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import Answer from './answer';
 import './trivia.css';
+import {connect} from 'react-redux';
 
-export default class Trivia extends Component {
+ class Trivia extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -27,12 +28,14 @@ export default class Trivia extends Component {
     this.updateQuestion = this.updateQuestion.bind(this);
     this.disableQuestion = this.disableQuestion.bind(this);
     this.handleScore = this.handleScore.bind(this);
+    this.gameOver = this.gameOver.bind(this);
   }
 
-  componentWillUnmount() {
-    if (this.state.currentScore) {
-      this.props.updateScore(this.state.currentScore);
-    }
+  gameOver(coins) {
+    // switch trivia and add game score to coins
+    console.log('coins' + coins)
+    this.props.isTriviaSwitch(false)
+    this.props.dispatch({type: "ADD_VALUE", value:coins})
   }
 
   decodeHTML(html) {
@@ -49,7 +52,8 @@ export default class Trivia extends Component {
     return a;
   }
 
-  handleScore(isCorrect) {
+  handleScore(isCorrect, isGameOver) {
+    // just adds newscore
     let newScore;
     switch (this.state.difficulty) {
       case 'easy':
@@ -74,7 +78,14 @@ export default class Trivia extends Component {
     } else {
       this.setState({
         currentScore: this.state.currentScore + newScore
-      });
+      }, () => {
+        // if gameover these points will go into coins
+        if (isGameOver) {
+          setTimeout(() => this.props.dispatch({type: "ADD_VALUE", value: this.state.currentScore}), 2500)
+
+        
+        }
+      }) ;
     }
   }
 
@@ -128,14 +139,14 @@ export default class Trivia extends Component {
         correctAnsNum: this.state.correctAnsNum + 1
       });
       if (this.state.questionNumber === this.props.questions.length - 1) {
-        // right answer. set isTrivia to false (overflow)
+        // right answer. set isTrivia to false (overflow) gameover ALREADY ZERO
         this.disableQuestion();
-        this.handleScore(false);
-        setTimeout(this.props.isTriviaSwitch, 3000);
+        this.handleScore(true, true);
+        setTimeout(() => this.gameOver(0), 3000);
       } else {
         // right answer. next question number (+1 state) and update question (no overflow)
         this.disableQuestion();
-        this.handleScore(true);
+        this.handleScore(true, false);
         setTimeout(this.updateQuestion, 2000);
       }
     } else {
@@ -143,13 +154,13 @@ export default class Trivia extends Component {
         incorrectAnsNum: this.state.incorrectAnsNum + 1
       });
       if (this.state.questionNumber === this.props.questions.length - 1) {
-        // wrong answer + overflow. set isTrivia to false
-        this.handleScore(false);
+        // wrong answer + overflow. set isTrivia to false gameover
+        this.handleScore(false, true);
         this.disableQuestion();
-        setTimeout(this.props.isTriviaSwitch, 3000);
+        setTimeout(() => this.gameOver(0), 3000);
       } else {
         // no overflow + wrong answer next question number (+1 state) and update question
-        this.handleScore(false);
+        this.handleScore(false, false);
         this.disableQuestion();
         setTimeout(this.updateQuestion, 2000);
       }
@@ -193,7 +204,11 @@ export default class Trivia extends Component {
           </ul>
           <div className='game-info'>
             <h4 className='game-score'>
+
+
               <p>Game score: {this.state.currentScore}</p>
+
+              
             </h4>
             <div className='score-col'>
               <div className='answered'>{this.state.correctAnsNum}</div>
@@ -203,10 +218,17 @@ export default class Trivia extends Component {
               </div>
               <div className='unanswered'>{this.state.incorrectAnsNum}</div>
             </div>
-            <div className='total-score'>Score: {this.props.totalScore}</div>
           </div>
         </div>
       );
     }
   }
 }
+
+const mapStateToProps = (state) => ({
+  coins: state.coins,
+  hideUI: state.hideUI,
+  coinsMore: state.coinsMore
+})
+
+export default connect(mapStateToProps)(Trivia);

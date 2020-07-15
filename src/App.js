@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Trivia from './components/trivia';
 import Menu from './components/menu';
 import './App.css';
+import {connect} from 'react-redux';
 
-export default class App extends Component {
+class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -13,14 +14,16 @@ export default class App extends Component {
       isTriviaMenu: true,
       category: 0,
       difficulty: 0,
-      questionsNumber: 10
+      questionsNumber: 1
     };
     this.isTriviaSwitch = this.isTriviaSwitch.bind(this);
-    
     this.apiCall = this.apiCall.bind(this);
     this.applyCategory = this.applyCategory.bind(this);
     this.switchTriviaMenu = this.switchTriviaMenu.bind(this);
-    this.updateScore = this.updateScore.bind(this);
+    this.increment = this.increment.bind(this);
+    this.addValue = this.addValue.bind(this);
+    this.toggleShop = this.toggleShop.bind(this);
+    this.buyItem = this.buyItem.bind(this);
   }
 
   apiCall(URL) {
@@ -42,13 +45,16 @@ export default class App extends Component {
       );
   }
 
+
   componentWillMount() {
     this.apiCall(
       `https://opentdb.com/api.php?amount=${this.state.questionsNumber}`
     );
   }
 
-  isTriviaSwitch() {
+  isTriviaSwitch(isStarted) {
+    isStarted ? this.props.dispatch({type: "ADD_VALUE", value: -50}) : console.log('passed')
+    this.props.dispatch({type: "SWITCH_UI"})
     this.setState(
       {
         isTrivia: !this.state.isTrivia
@@ -91,9 +97,26 @@ export default class App extends Component {
     });
   }
 
-  updateScore(score) {
-    console.log(score);
+  increment = () => {
+    this.props.dispatch({type: "INCREMENT"})
   }
+
+  addValue = (value) => {
+    this.props.dispatch({type: "ADD_VALUE", value: value})
+  }
+
+  toggleShop() {
+    this.props.dispatch({type: "TOOGLE_SHOP"})
+  }
+
+  buyItem(item) {
+    if (item === 'skipper') {
+      this.props.dispatch({type: "BUY_ITEM", item: 'skipper'})
+    } else if (item === 'correct') {
+      this.props.dispatch({type: "BUY_ITEM", item: 'correct'})
+    }
+  }
+
 
   render() {
     const { isTrivia, questions, isTriviaMenu } = this.state;
@@ -101,39 +124,94 @@ export default class App extends Component {
       return <div>LOADING</div>;
     } else {
       return (
+
         <div className='main-container'>
           <div className='inner-container'>
+            <div className="game">
+
+        {/* 
+            <button onClick={this.increment}>+</button>
+          <button onClick = {() => this.addValue(10)}>REDUX ADD 10</button>
+          <br/>
+
+            coinsmore : {this.props.coinsMore ? "true" : 'flase'}
+            REDUX HIDEUI: {this.props.hideUI ? "true" : "false"} <br/>
+            REDUX COINS: {this.props.coins}
+*/}
+
             <Menu
               applyCategory={this.applyCategory}
               triviaSwitch={this.switchTriviaMenu}
             />
-
+    {!this.props.shopToggled ?             <div>
             {isTriviaMenu ? (
               <div className='trivia-menu'>
-                <button className='button' onClick={this.isTriviaSwitch}>
+                <button className='button' onClick={() => this.isTriviaSwitch(this.props.coinsMore)}>
                   {' '}
                   {isTrivia ? (
                     <i className='fas fa-undo-alt'></i>
                   ) : (
                     <i className='far fa-play-circle'></i>
                   )}
-                  {isTrivia ? ' Close' : ' Start!'}
+                  {isTrivia ? ' Close' : 
+                  <div> 
+                    
+                    <div>START 
+                      {this.props.coinsMore ? <p style={{display: "inline"}}>-50  <i className="fas fa-coins"></i></p> : null}
+                       </div>
+                    
+                    </div>
+                  
+                  }
                 </button>
                 {this.state.isTrivia ? (
                   <Trivia
-                    updateScore={this.updateScore}
                     questions={this.state.questions}
                     isTriviaSwitch={this.isTriviaSwitch}
                     questionsNumber={this.state.questionsNumber}
                   />
                 ) : (
-                  <h1>Score</h1>
+                  null
                 )}
               </div>
+
             ) : null}
+                        </div> : 
+                        <div className="shop-component">
+                          <ul className="shop-items"> 
+                            <li className='shop-item'>
+                              <button onClick={() => this.buyItem('skipper')} className='switchTriviaButton'>
+                              Question skipper
+                              </button>
+
+                              </li>
+                              <li className='shop-item'>
+                              <button  onClick={() => this.buyItem('correct') }  className='switchTriviaButton' >
+                              Correct answer
+                              </button>
+                              </li>
+                              <li className='shop-item' lo>
+                              <button onClick={this.toggleShop} className='switchTriviaButton'>
+                              BACK
+                              </button>
+                              </li>
+                          </ul>
+                        </div>
+                        }
+
+          </div>
           </div>
         </div>
       );
     }
   }
 }
+
+const mapStateToProps = (state) => ({
+  coins: state.coins,
+  hideUI: state.hideUI,
+  coinsMore: state.coinsMore,
+  shopToggled: state.shopToggled
+})
+
+export default connect(mapStateToProps)(App);
